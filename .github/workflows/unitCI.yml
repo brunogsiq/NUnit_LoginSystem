@@ -40,7 +40,7 @@ jobs:
 
       # Fazer upload do relatório de testes
       - name: Upload test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2  # Usando a versão v2 da ação
         with:
           name: test-results
           path: test-results.xml
