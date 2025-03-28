@@ -1,0 +1,46 @@
+name: .NET CI Workflow
+
+# Define quando o workflow será acionado
+on:
+  push:
+    branches:
+      - main   # Ou o nome da branch principal do seu repositório
+  pull_request:
+    branches:
+      - main   # Aciona o workflow também quando um PR é feito para a branch principal
+
+# Define os jobs do workflow
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Define o sistema operacional para rodar os testes
+
+    steps:
+      # Checkout do repositório
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Configuração do .NET SDK (especificando a versão 8.0)
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      # Restaurar as dependências do projeto
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Build do projeto
+      - name: Build
+        run: dotnet build --configuration Release
+
+      # Rodar os testes
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build --verbosity normal
+
+      # Publicar os resultados do teste (opcional)
+      - name: Upload test results
+        if: always()  # Sempre será executado, mesmo se os testes falharem
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: $(System.DefaultWorkingDirectory)/TestResults
