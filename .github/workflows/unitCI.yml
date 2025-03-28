@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main   # Aciona o workflow também quando um PR é feito para a branch principal
+  workflow_dispatch:  # Permite a execução manual do workflow
 
 # Define os jobs do workflow
 jobs:
@@ -33,14 +34,13 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
-      # Rodar os testes
+      # Rodar os testes e gerar relatório no formato JUnit
       - name: Run tests
-        run: dotnet test --configuration Release --no-build --verbosity normal
+        run: dotnet test --configuration Release --no-build --verbosity normal --logger "junit;LogFileName=test-results.xml"
 
-      # Publicar os resultados do teste (opcional)
+      # Fazer upload do relatório de testes
       - name: Upload test results
-        if: always()  # Sempre será executado, mesmo se os testes falharem
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: $(System.DefaultWorkingDirectory)/TestResults
+          path: test-results.xml
