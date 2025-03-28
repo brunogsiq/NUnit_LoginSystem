@@ -18,11 +18,11 @@ jobs:
     steps:
       # Checkout do repositório
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Usar a versão mais recente do checkout
 
       # Configuração do .NET SDK (especificando a versão 8.0)
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3  # Usar a versão mais recente do setup-dotnet
         with:
           dotnet-version: '8.0.x'
 
@@ -38,9 +38,9 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal --logger "junit;LogFileName=test-results.xml"
 
-      # Fazer upload do relatório de testes (versão mais específica)
+      # Fazer upload do relatório de testes
       - name: Upload test results
-        uses: actions/upload-artifact@v2.3.0  # Tente usar v2.3.0 para garantir compatibilidade
+        uses: actions/upload-artifact@v2  # Usando v2 para upload-artifact
         with:
           name: test-results
           path: test-results.xml
