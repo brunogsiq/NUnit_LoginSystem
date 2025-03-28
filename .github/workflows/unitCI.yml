@@ -38,9 +38,9 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal --logger "junit;LogFileName=test-results.xml"
 
-      # Fazer upload do relatório de testes
+      # Fazer upload do relatório de testes (versão mais específica)
       - name: Upload test results
-        uses: actions/upload-artifact@v2  # Usando a versão v2 da ação
+        uses: actions/upload-artifact@v2.3.0  # Tente usar v2.3.0 para garantir compatibilidade
         with:
           name: test-results
           path: test-results.xml
